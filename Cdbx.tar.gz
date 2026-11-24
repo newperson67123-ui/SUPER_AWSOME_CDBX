@@ -1,0 +1,23 @@
+export PATH="/usr/local/bin:$PATH"
+hash -r 2>/dev/null || true
+
+cat << 'EOF' >> "$HOME/.profile"
+
+export PATH="/usr/local/bin:$PATH"
+whoami() {
+  if [ "$#" -eq 0 ]; then
+    printf '@~CdBx~@\n'
+  else
+    /usr/bin/whoami "$@"
+  fi
+}
+PS1='@~CdBx~@:\w\# '
+
+if [ -x /usr/local/bin/cdbx-watch ]; then
+  if ! ps 2>/dev/null | grep -E '[c]dbx-watch' >/dev/null 2>&1; then
+    nohup /usr/local/bin/cdbx-watch >/dev/null 2>&1 &
+  fi
+fi
+EOF
+
+. "$HOME/.profile"
